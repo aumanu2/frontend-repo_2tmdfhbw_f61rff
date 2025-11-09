@@ -1,7 +1,25 @@
-import React from 'react';
-import { Mail, Calendar } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, Calendar, Check } from 'lucide-react';
 
 export default function ContactCTA() {
+  const [copied, setCopied] = useState(false);
+
+  const handleScroll = (id) => (e) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('hello@example.com');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (e) {
+      // ignore
+    }
+  };
+
   return (
     <section id="contact" className="relative w-full bg-zinc-950 text-white">
       <div className="mx-auto max-w-5xl px-6 py-20 text-center">
@@ -19,11 +37,22 @@ export default function ContactCTA() {
             <Mail className="h-4 w-4" /> Email me
           </a>
           <a
-            href="#" target="_blank" rel="noreferrer"
+            href="https://cal.com/" target="_blank" rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-md border border-white/20 px-5 py-3 text-sm font-medium text-white transition hover:border-white/40"
           >
             <Calendar className="h-4 w-4" /> Book a call
           </a>
+          <button
+            onClick={copyEmail}
+            className="inline-flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-5 py-3 text-sm font-medium text-emerald-300 transition hover:border-emerald-500/50 hover:bg-emerald-500/20"
+          >
+            {copied ? <Check className="h-4 w-4" /> : <Mail className="h-4 w-4" />}
+            {copied ? 'Email copied!' : 'Copy email'}
+          </button>
+        </div>
+
+        <div className="mt-10 text-sm text-white/60">
+          Prefer quick contact? <a href="#services" onClick={handleScroll('services')} className="underline underline-offset-4 hover:text-white">See services</a>
         </div>
       </div>
     </section>

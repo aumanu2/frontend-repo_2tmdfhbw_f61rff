@@ -6,25 +6,35 @@ const services = [
     icon: Code2,
     title: 'Frontend Engineering',
     desc: 'Robust, maintainable, and accessible code with React, TypeScript, and modern tooling.',
+    href: '#contact',
   },
   {
     icon: Palette,
     title: 'Design Systems',
     desc: 'Cohesive UI kits, tokens, and documentation that scale across products and teams.',
+    href: '#work',
   },
   {
     icon: Smartphone,
     title: 'Responsive Experiences',
     desc: 'Mobile-first layouts, micro-interactions, and motion that feel delightful everywhere.',
+    href: '#work',
   },
   {
     icon: Zap,
     title: 'Performance & SEO',
     desc: 'Lighthouse-optimized builds, semantic HTML, and best-practice architecture.',
+    href: '#contact',
   },
 ];
 
 export default function Services() {
+  const handleScroll = (id) => (e) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <section id="services" className="relative w-full bg-zinc-950 text-white">
       <div className="mx-auto max-w-7xl px-6 py-20">
@@ -40,14 +50,20 @@ export default function Services() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="group rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:-translate-y-1 hover:bg-white/10">
+          {services.map(({ icon: Icon, title, desc, href }) => (
+            <a
+              key={title}
+              href={href}
+              onClick={handleScroll(href.replace('#', ''))}
+              className="group rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:-translate-y-1 hover:bg-white/10"
+            >
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/10 text-white">
                 <Icon className="h-6 w-6" />
               </div>
               <h3 className="mt-4 text-lg font-medium">{title}</h3>
               <p className="mt-2 text-sm text-white/70">{desc}</p>
-            </div>
+              <span className="mt-4 inline-block text-xs text-white/60">Learn more →</span>
+            </a>
           ))}
         </div>
       </div>
